@@ -56,14 +56,14 @@ body {
 
 .form-card-title{
   border: none;
-  font-size: 1rem;
+  font-size: 1.2rem;
   border-radius: 0.2rem;
   padding: 0.5rem;
 }
 
 .autoresize{
   border: none;
-  font-size: 1rem;
+  font-size: 0.9rem;
   border-radius: 0.2rem;
   padding: 0.5rem;
 }
@@ -106,17 +106,22 @@ body {
 
 .card-title {
   color: #2c2c2c;
+  font-family: 'Permanent Marker', cursive;
   font-size: 1.1rem;
-  padding: .5rem;
-  padding-bottom: 0.5rem;
+  padding: 0.5rem;
   font-weight: bold;
+  border: none;
 }
 
 .card-content {
   color: #4c4c4c;
   font-size: 0.9rem;
-  padding: .5rem;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
   align-self: center;
+  justify-content: center;
+  border: none;
 }
 
 .card-color-1{
