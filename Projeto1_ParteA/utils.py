@@ -1,10 +1,54 @@
 import json
 
+import sqlite3
+
+from dataclasses import dataclass
+
+@dataclass
+class Cards:
+    titulo: str = None
+    detalhes: str = ''
+
+class Database: 
+    def __init__(self,nome):
+        nome = nome+".db"
+        self.conn = sqlite3.connect(nome)
+        self.cursor = self.conn.cursor()
+        self.card = self.cursor.execute("CREATE TABLE IF NOT EXISTS cards (titulo STRING, detalhes STRING NOT NULL);")
+
+    def add(self, card):
+        self.cursor.execute("INSERT INTO cards (titulo,detalhes) VALUES (?, ?);", (card.titulo,card.detalhes))
+        self.conn.commit()
+
+    def get_all(self):
+        cursor = self.conn.execute("SELECT titulo, detalhes FROM cards;")
+        cards = []
+        for conteudo in cursor:
+            titulo = conteudo[0]
+            detalhes = conteudo[1]
+            cards.append(Cards(titulo=titulo, detalhes=detalhes))
+        return cards
+        
+    def update(self, entry):
+        self.cursor.execute("UPDATE cards SET titulo = ? WHERE detalhes = ?;", (entry.titulo,entry.detalhes))
+        self.cursor.execute("UPDATE cards SET detalhes = ? WHERE titulo = ?;", (entry.detalhes,entry.titulo))
+        self.conn.commit()
+
+    def delete(self, card_titulo):
+        self.cursor.execute("DELETE FROM cards WHERE titulo = ?;", (card_titulo,))
+        self.conn.commit()
+
+
+
 def extract_route(requisicao):
     if requisicao.startswith('GET'):
         lista1 = requisicao.split("GET /")
-    else:
+    elif requisicao.startswith('POST'):
         lista1 = requisicao.split("POST /")
+    elif requisicao.startswith('PUT'):
+        lista1 = requisicao.split("PUT /")
+    else:
+        lista1 = requisicao.split("DELETE /")
 
     lista2 = lista1[1].split(" ")
     return lista2[0]
@@ -20,12 +64,21 @@ def read_file(path):
             binary = file.read()
         return binary
 
-def load_data(nomeJson):
-    filePath = "data/"+nomeJson
-    with open(filePath, "rt", encoding="utf-8") as text:
-        content = text.read()
-        contentPython = json.loads(content)
-        return contentPython
+def load_data(nomeDb):
+    con = sqlite3.connect(nomeDb)
+    cur = con.cursor()
+    cursor = cur.execute("SELECT titulo, detalhes FROM cards;")
+    car = []
+    for conteudo in cursor:
+        titulo = conteudo[0]
+        detalhes = conteudo[1]
+        car.append(Cards(titulo=titulo, detalhes=detalhes))
+
+    return car
+        
+
+
+
 
 def load_template(file_path):
     file = open("templates/"+file_path,encoding="utf-8")
