@@ -1,8 +1,14 @@
 <li>
+    <form class = "delete-card" method="post" action = "\delete">
+        <input type="hidden" name="id" value="{id}"/>
+        <button type="submit" class="delete_btn"><i>X</i></button>
+    </form>
     <div class="card">
-        <h3 class="card-title" method="put">{title}</h3>
-        <div class="card-content">
-            <p class="card-content" method="put">{details}</p>
-        </div>
+        <form class="update-card" method = "post" action = "\update" id = "update">
+            <input type="hidden" name="id" value="{id}"/>
+            <input class="card-title" name="titulo" value="{titulo}"/>
+            <textarea class="card-content" name="detalhes">{detalhes}</textarea>
+            <button type="submit" class="update_btn">Editar</button>
+        </form>
     </div>
 </li>

@@ -77,7 +77,27 @@ body {
   padding: 0.5rem;
 }
 
+.delete_btn{
+  border:none;
+  background: #ff0000;
+  font-size: 0.5rem;
+  width:1rem;
 
+  box-shadow: 0 2px 7px rgba(0,0,0,0.12), 0 2px 7px rgba(0,0,0,0.24);
+  border-radius: 0.2rem;
+  padding: 0.1rem;
+}
+
+.update_btn{
+  font-size: 0.5rem;
+  display: flex;
+  border:none;
+  background: #2bf703;
+  width:1.6rem;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.12), 0 2px 7px rgba(0,0,0,0.24);
+  border-radius: 0.2rem;
+  padding: 0.1rem;
+}
 
 
 
@@ -85,8 +105,8 @@ body {
   background: #fff;
   box-shadow: 0 5px 10px rgba(0,0,0,0.12), 0 5px 10px rgba(0,0,0,0.24);
   margin: 0.5rem; 
-  height: 8rem;
-  width: 13rem;
+  height: 7rem;
+  width: 12rem;
   font-family: 'Permanent Marker', cursive;
   flex-direction: column;
   display: flex;
@@ -103,25 +123,32 @@ body {
   justify-content: space-around;
 }
 
-
 .card-title {
   color: #2c2c2c;
   font-family: 'Permanent Marker', cursive;
-  font-size: 1.1rem;
-  padding: 0.5rem;
+  font-size: 0.9rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
   font-weight: bold;
   border: none;
+  background-color: #ffffff00;
 }
 
 .card-content {
   color: #4c4c4c;
-  font-size: 0.9rem;
-  padding-top: 0.5rem;
+  width: 90%;
+  height:84%;
+  font-size: 0.7rem;
+  padding-top: 0.2rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+  padding-bottom: 0.2rem;
   align-self: center;
   justify-content: center;
   border: none;
+  background-color: #ffffff00;
 }
 
 .card-color-1{

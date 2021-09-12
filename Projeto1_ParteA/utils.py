@@ -5,7 +5,8 @@ import sqlite3
 from dataclasses import dataclass
 
 @dataclass
-class Cards:
+class Note:
+    id: int = None
     titulo: str = None
     detalhes: str = ''
 
@@ -14,41 +15,36 @@ class Database:
         nome = nome+".db"
         self.conn = sqlite3.connect(nome)
         self.cursor = self.conn.cursor()
-        self.card = self.cursor.execute("CREATE TABLE IF NOT EXISTS cards (titulo STRING, detalhes STRING NOT NULL);")
+        self.note = self.cursor.execute("CREATE TABLE IF NOT EXISTS note (id INTEGER PRIMARY KEY, titulo STRING, detalhes STRING NOT NULL);")
 
-    def add(self, card):
-        self.cursor.execute("INSERT INTO cards (titulo,detalhes) VALUES (?, ?);", (card.titulo,card.detalhes))
+    def add(self, note):
+        self.cursor.execute("INSERT INTO note (titulo,detalhes) VALUES (?, ?);", (note.titulo,note.detalhes))
         self.conn.commit()
 
     def get_all(self):
-        cursor = self.conn.execute("SELECT titulo, detalhes FROM cards;")
-        cards = []
+        cursor = self.conn.execute("SELECT id, titulo, detalhes FROM note;")
+        notes = []
         for conteudo in cursor:
-            titulo = conteudo[0]
-            detalhes = conteudo[1]
-            cards.append(Cards(titulo=titulo, detalhes=detalhes))
-        return cards
+            id = conteudo[0]
+            titulo = conteudo[1]
+            detalhes = conteudo[2]
+            notes.append(Note(id=id, titulo=titulo, detalhes=detalhes))
+        return notes
         
     def update(self, entry):
-        self.cursor.execute("UPDATE cards SET titulo = ? WHERE detalhes = ?;", (entry.titulo,entry.detalhes))
-        self.cursor.execute("UPDATE cards SET detalhes = ? WHERE titulo = ?;", (entry.detalhes,entry.titulo))
+        self.cursor.execute("UPDATE note SET titulo = ? WHERE id = ?;", (entry.titulo,entry.id))
+        self.cursor.execute("UPDATE note SET detalhes = ? WHERE id = ?;", (entry.detalhes,entry.id))
         self.conn.commit()
 
-    def delete(self, card_titulo):
-        self.cursor.execute("DELETE FROM cards WHERE titulo = ?;", (card_titulo,))
+    def delete(self, note_id):
+        self.cursor.execute("DELETE FROM note WHERE id = ?;", (note_id,))
         self.conn.commit()
-
-
 
 def extract_route(requisicao):
     if requisicao.startswith('GET'):
         lista1 = requisicao.split("GET /")
-    elif requisicao.startswith('POST'):
-        lista1 = requisicao.split("POST /")
-    elif requisicao.startswith('PUT'):
-        lista1 = requisicao.split("PUT /")
     else:
-        lista1 = requisicao.split("DELETE /")
+        lista1 = requisicao.split("POST /")
 
     lista2 = lista1[1].split(" ")
     return lista2[0]
@@ -64,21 +60,22 @@ def read_file(path):
             binary = file.read()
         return binary
 
-def load_data(nomeDb):
-    con = sqlite3.connect(nomeDb)
-    cur = con.cursor()
-    cursor = cur.execute("SELECT titulo, detalhes FROM cards;")
-    car = []
-    for conteudo in cursor:
-        titulo = conteudo[0]
-        detalhes = conteudo[1]
-        car.append(Cards(titulo=titulo, detalhes=detalhes))
+def load_data():
+    db = Database("notes")
+    notes = db.get_all()
+    return notes
 
-    return car
-        
+def add_notes(note):
+    db =  Database("notes")
+    db.add(Note(titulo=note["titulo"], detalhes=note["detalhes"]))
 
+def delete_note(id):
+    db = Database("notes")
+    db.delete(id)
 
-
+def update_note(id, note):
+    db = Database("notes")
+    db.update(Note(id=id, titulo=note["titulo"], detalhes=note["detalhes"]))
 
 def load_template(file_path):
     file = open("templates/"+file_path,encoding="utf-8")
