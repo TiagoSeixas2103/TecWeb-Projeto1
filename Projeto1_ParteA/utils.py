@@ -1,5 +1,3 @@
-import json
-
 import sqlite3
 
 from dataclasses import dataclass
@@ -61,21 +59,21 @@ def read_file(path):
         return binary
 
 def load_data():
-    db = Database("notes")
-    notes = db.get_all()
+    banco_de_dados = Database("notes")
+    notes = banco_de_dados.get_all()
     return notes
 
 def add_notes(note):
-    db =  Database("notes")
-    db.add(Note(titulo=note["titulo"], detalhes=note["detalhes"]))
+    banco_de_dados =  Database("notes")
+    banco_de_dados.add(Note(titulo=note["titulo"], detalhes=note["detalhes"]))
 
 def delete_note(id):
-    db = Database("notes")
-    db.delete(id)
+    banco_de_dados = Database("notes")
+    banco_de_dados.delete(id)
 
 def update_note(id, note):
-    db = Database("notes")
-    db.update(Note(id=id, titulo=note["titulo"], detalhes=note["detalhes"]))
+    banco_de_dados = Database("notes")
+    banco_de_dados.update(Note(id=id, titulo=note["titulo"], detalhes=note["detalhes"]))
 
 def load_template(file_path):
     file = open("templates/"+file_path,encoding="utf-8")
